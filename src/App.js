@@ -3,6 +3,7 @@ import Hero from "./components/Hero/Hero";
 import Itinerary from "./components/Itinerary/Itinerary";
 import LaunchAnnouncement from "./components/Announcement/Launch";
 import PlanTrip from "./components/Itinerary/Itinerary";
+import ItineraryPlanner from "./components/ItineraryPlanner/ItineraryPlanner";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
     <Hero/>
     <PlanTrip/>
     <LaunchAnnouncement/>
+    <ItineraryPlanner/>
     </div>
   );
 }

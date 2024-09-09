@@ -129,7 +129,11 @@ const PlanTrip = () => {
       <div className="w-1/2  my-auto h-screen bg-[#000003] rounded-lg shadow-lg">
         <GoogleMap
           center={mapCenter}
-          zoom={10}
+          zoom={12}
+          options={{
+            fullscreenControl: false,
+            zoomControl: false,
+          }}
           mapContainerClassName="w-full h-full rounded-lg"
         >
           {markers.map((marker, index) => (
