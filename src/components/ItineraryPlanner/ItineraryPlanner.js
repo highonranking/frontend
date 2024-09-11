@@ -7,10 +7,13 @@ import NotesSection from './NotesSection'
 import PlacesToVisit from './PlacesToVisit'
 import ItinerarySection from './ItinerarySection'
 import BudgetSection from './BudgetSection'
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const ItineraryPlanner = () => {
   return (
    <>
+    <DndProvider backend={HTML5Backend}>
    <div className="flex">
       <SidebarNavigation />
       <div className="ml-1/5 w-full">
@@ -24,6 +27,7 @@ const ItineraryPlanner = () => {
         </main>
       </div>
     </div>
+    </DndProvider>
    </>
   )
 }
