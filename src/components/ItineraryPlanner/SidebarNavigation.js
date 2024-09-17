@@ -8,7 +8,7 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="w-64 sticky bg-[white] text-white h-screen flex-shrink-0 p-4">
+    <aside className="w-64 sticky top-0 bg-[white] text-white h-screen flex-shrink-0 p-4">
       {/* Title */}
       <div className="font-semibold text-lg tracking-wider mb-6 text-[#0d0d0d]">
        Creating Trails

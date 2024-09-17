@@ -10,13 +10,16 @@ const PlaceCard = ({ place, index, movePlace }) => {
   });
 
   return (
-    <div ref={ref} className="bg-white p-2 shadow-md rounded-lg flex items-center">
+    <div 
+      ref={ref} 
+      className="bg-white p-4 shadow-lg rounded-lg flex flex-col items-center transition-transform hover:scale-105 transform-gpu duration-300 max-w-"
+    >
       <img
         src={place.imageUrl || 'https://www.financialexpress.com/wp-content/uploads/2022/12/goa-1.jpg'}
         alt={place.title}
-        className="w-10 h-10 mr-2 rounded-full"
+        className="w-full h-32 object-cover rounded-t-lg"
       />
-      <p>{place.title}</p>
+      <p className="mt-3 text-base text-center font-semibold">{place.title}</p>
     </div>
   );
 };
@@ -29,9 +32,9 @@ const Category = ({ category, places, movePlace }) => {
   });
 
   return (
-    <div ref={drop} className="bg-gray-100 p-4 rounded-lg shadow-md mb-4">
-      <h3 className="text-lg font-bold">{category}</h3>
-      <div className="space-y-2">
+    <div ref={drop} className="bg-gray-100 p-2 rounded-lg shadow-md mb-6">
+      <h3 className="text-lg font-bold mb-4">{category}</h3>
+      <div className="flex flex-wrap gap-4">
         {places.map((place, index) => (
           <PlaceCard key={index} place={place} index={index} movePlace={movePlace} />
         ))}
@@ -43,22 +46,29 @@ const Category = ({ category, places, movePlace }) => {
 // Main Component
 const PlacesToVisit = () => {
   const defaultPlaces = [
-    { title: "Baga Beach", category: "Beach", imageUrl: "https://via.placeholder.com/100" },
-    { title: "Calangute Beach", category: "Beach", imageUrl: "https://via.placeholder.com/100" },
-    { title: "Tito's Club", category: "Food", imageUrl: "" },
+    { title: "Baga Beach", category: "Beach", imageUrl: "https://www.financialexpress.com/wp-content/uploads/2022/12/goa-1.jpg" },
+    { title: "Calangute Beach", category: "Beach", imageUrl: "https://www.financialexpress.com/wp-content/uploads/2022/12/goa-1.jpg" },
+    { title: "Tito's Club", category: "Food", imageUrl: "https://www.financialexpress.com/wp-content/uploads/2022/12/goa-1.jpg" },
   ];
 
   const [places, setPlaces] = useState(defaultPlaces);
   const [categories, setCategories] = useState(["Beach", "Food"]);
+  const [newCategoryTitle, setNewCategoryTitle] = useState(""); 
+  const [selectedCategory, setSelectedCategory] = useState(""); 
 
-  // Add new place to default category
+  // Add new place to a specific category
   const addPlace = (title, category) => {
-    setPlaces([...places, { title, category, imageUrl: '' }]);
+    if (title && category) {
+      setPlaces([...places, { title, category, imageUrl: '' }]);
+    }
   };
 
-  // Add new category
-  const addCategory = (category) => {
-    setCategories([...categories, category]);
+  // Add new category with title input
+  const addCategory = () => {
+    if (newCategoryTitle) {
+      setCategories([...categories, newCategoryTitle]);
+      setNewCategoryTitle("");
+    }
   };
 
   // Move place between categories
@@ -69,29 +79,57 @@ const PlacesToVisit = () => {
   };
 
   return (
-    <section className="p-4">
-      <h2 className="text-xl font-bold mb-4">Places to Visit</h2>
+    <section className="p-2  mx-auto">
+      <h2 className="text-3xl font-bold text-gray-700 mb-6">Places to Visit</h2>
 
-      {/* Input to add places */}
-      <div className="flex space-x-4 mb-6">
-        <input
-          type="text"
-          placeholder="Add a place"
-          className="border p-2 rounded-md"
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && e.target.value) {
-              addPlace(e.target.value, "Beach");
-              e.target.value = "";
-            }
-          }}
-        />
-        <button onClick={() => addCategory("New Category")} className="bg-indigo-500 text-white px-4 py-2 rounded-md flex items-center">
-          <FiPlus className="mr-2" /> Add Category
-        </button>
+      {/* Category Input */}
+      <div className="mb-6">
+        <div className="flex space-x-3 items-center">
+          <input
+            type="text"
+            placeholder="New category title"
+            value={newCategoryTitle}
+            onChange={(e) => setNewCategoryTitle(e.target.value)}
+            className="border p-3 rounded-lg flex-grow text-gray-700 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+          />
+          <button
+            onClick={addCategory}
+            className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-3 rounded-lg flex items-center transition duration-200 shadow-md"
+          >
+            <FiPlus className="mr-2" /> Add Category
+          </button>
+        </div>
+      </div>
+
+      {/* Place Input */}
+      <div className="mb-8">
+        <div className="flex space-x-3 items-center">
+          <input
+            type="text"
+            placeholder="Add a place"
+            className="border p-3 rounded-lg flex-grow text-gray-700 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && e.target.value && selectedCategory) {
+                addPlace(e.target.value, selectedCategory);
+                e.target.value = "";
+              }
+            }}
+          />
+          <select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            className="border p-3 rounded-lg text-gray-700 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+          >
+            <option value="">Select category</option>
+            {categories.map((category, index) => (
+              <option key={index} value={category}>{category}</option>
+            ))}
+          </select>
+        </div>
       </div>
 
       {/* Categories with draggable places */}
-      <div className="space-y-4">
+      <div className="space-y-6">
         {categories.map((category, index) => (
           <Category
             key={index}

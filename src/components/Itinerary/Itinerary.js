@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
+import { useNavigate } from "react-router-dom";
+
 
 const PlanTrip = () => {
+    const navigate = useNavigate(); 
   const [tripData, setTripData] = useState({
     location: "",
     startDate: "",
@@ -40,6 +43,7 @@ const PlanTrip = () => {
     e.preventDefault();
     console.log("Trip Data:", tripData);
     // Handle further logic for planning the trip (API calls, etc.)
+    navigate("/itinerary-planner"); 
   };
 
   if (!isLoaded) return <div>Loading...</div>;
